@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Media } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { AiFillHeart, AiFillPlayCircle } from "react-icons/ai";
@@ -32,7 +32,6 @@ const HomeBanner = <T extends "anime" | "manga">({
     type,
     data
 }: HomeBannerProps<T>) => {
-    console.log("Home Banner", data);
     const [ index, setIndex ] = useState<number>(0);
     const [ showTrailer, setShowTrailer ] = useState<boolean>(false);
     const [player, setPlayer] =
@@ -40,7 +39,7 @@ const HomeBanner = <T extends "anime" | "manga">({
     const [isMuted, setIsMuted] = useState(true);
     const isRanOnce = useRef(false);
 
-    const activeData = data[index];
+    const activeData = useMemo(() => data[index], [data, index]);
 
     const handleSlideChange: SwiperProps["onSlideChange"] = useCallback(
         (swiper: any) => {
@@ -202,4 +201,4 @@ const HomeBanner = <T extends "anime" | "manga">({
     )
 }
 
-export default HomeBanner;
+export default React.memo(HomeBanner);

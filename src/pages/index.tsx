@@ -8,6 +8,7 @@ import Head from "next/head";
 import React from "react";
 import { getSeason, getNextSeason } from "@/utils";
 import ColumnSection from "@/components/shared/ColumnSection";
+import Rantings from "@/components/shared/Rantings";
 
 interface AnimePageProps {
    trendingAnime: Media[];
@@ -15,6 +16,7 @@ interface AnimePageProps {
    popularAllTime: Media[];
    favouriteAllTime: Media[];
    animeNextSeason: Media[];
+   ratingAnime: Media[];
 }
 
 const AnimePage: NextPage<AnimePageProps> = ({
@@ -22,7 +24,8 @@ const AnimePage: NextPage<AnimePageProps> = ({
    popularSeason,
    popularAllTime,
    favouriteAllTime,
-   animeNextSeason
+   animeNextSeason,
+   ratingAnime
 }) => {
    const currentSeason = getSeason();
    const nextSeason = getNextSeason();
@@ -30,7 +33,7 @@ const AnimePage: NextPage<AnimePageProps> = ({
    return (
       <React.Fragment>
          <Head>
-            <title>Kurumi</title>
+            <title>Kurumi - Anime</title>
          </Head>
          <ClientOnly>
             <HomeBanner type="anime" data={trendingAnime} />
@@ -60,7 +63,13 @@ const AnimePage: NextPage<AnimePageProps> = ({
                   data={animeNextSeason}
                   viewMoreHref={`browse?type=anime&season=${nextSeason.season}&seasonYear=${nextSeason.year}&sort=popularity`}
                />
+
             </Section>
+            <Rantings 
+               title='Top 20 Anime'
+               type='anime'
+               data={ratingAnime}
+            />
          </ClientOnly>
       </React.Fragment>
    )
@@ -99,13 +108,19 @@ export const getStaticProps: GetStaticProps = async () => {
       seasonYear: 2022,
       perPage: 5,
    })
+   const { data: ratingAnime } = await AnilistApi.getAnime({
+      type: 'ANIME',
+      perPage: 20,
+      sort: 'SCORE_DESC',
+   })
    return {
       props: {
          trendingAnime: trendingAnime.Page.media,
          popularSeason: popularSeason.Page.media,
          popularAllTime: popularAllTime.Page.media,
          favouriteAllTime: favouriteAllTime.Page.media,
-         animeNextSeason: animeNextSeason.Page.media
+         animeNextSeason: animeNextSeason.Page.media,
+         ratingAnime: ratingAnime.Page.media
       }
    }
 }
