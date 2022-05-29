@@ -17,7 +17,9 @@ const AnimeDetailPage: NextPage<AnimeDetailPage> = ({
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const id = context.params.id
+    const id = context.params.id;
+    console.log(id);
+    
     const { data: animeDetailPage } = await AnilistApi.getAnime({
         type: 'ANIME',
         id: Number(id)
