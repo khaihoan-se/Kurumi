@@ -19,12 +19,12 @@ const AnimeDetailPage: NextPage<AnimeDetailPage> = ({
 export const getStaticProps: GetStaticProps = async ({
     params: { params }
 }) => {
-    console.log(params);
+    console.log(params[0]);
     
     const { data: animeDetailPage } = await AnilistApi.getAnime({
         type: 'ANIME',
         sort: 'TRENDING_DESC',
-        id: Number(params)
+        id: Number(params[0])
     })
 
     return {
