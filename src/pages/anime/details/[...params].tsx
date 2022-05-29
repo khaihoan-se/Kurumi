@@ -23,7 +23,6 @@ export const getStaticProps: GetStaticProps = async ({
     
     const { data: animeDetailPage } = await AnilistApi.getAnime({
         type: 'ANIME',
-        sort: 'TRENDING_DESC',
         id: Number(params[0])
     })
 
