@@ -16,13 +16,15 @@ const AnimeDetailPage: NextPage<AnimeDetailPage> = ({
     )
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-    const id = context.params.id;
-    console.log(id);
+export const getStaticProps: GetStaticProps = async ({
+    params: { params }
+}) => {
+    console.log(params);
     
     const { data: animeDetailPage } = await AnilistApi.getAnime({
         type: 'ANIME',
-        id: Number(id)
+        sort: 'TRENDING_DESC',
+        id: Number(params)
     })
 
     return {
@@ -35,6 +37,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 export const getStaticPaths: GetStaticPaths = async () => {
     const { data } = await AnilistApi.getAnime({
         type: 'ANIME',
+        sort: 'TRENDING_DESC',
         perPage: 5,
     })
 
